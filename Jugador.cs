@@ -17,37 +17,112 @@ namespace Hada
             get; set;
         }
 
+        private Random rand
+        {
+            get; set;
+        }
+
         private int minEnergia
         {
             get; set;
         }
- 
-        private int amonestaciones
+
+        public string nombre
+        { get;  
+            private set;
+        }
+
+        public int puntos
+        {
+            get; set;
+        }
+
+
+        private int _amonestaciones;
+
+        public int amonestaciones
         {
             get
             {
-                return amonestaciones;
+                return _amonestaciones;
             }
             set
             {
-                if(maxAmonestaciones <= value)
-                {
-                    throw new amonestacionesMaximoExcedido();
+                if(maxAmonestaciones <= value){
+                    // amonestacionesMaximoExcedido();
                 }
-                else
-                {
-                    if (value < 0)
-                    {
-                        amonestaciones = 0;
+                else{
+                    if (value < 0){
+                        _amonestaciones = 0;
                     }
-                    else
-                    {
-                        amonestaciones = value;
+                    else{
+                        _amonestaciones = value;
                     }
                    
                 }
             }
         }
+
+        private int _faltas;
+        public int faltas
+        {
+            get { return _faltas; }
+
+            set
+            {
+                if (value > maxFaltas)
+                {
+                    //faltasMaximoExcedido();
+                }
+                else
+                {
+                    _faltas = value;
+                }
+            }
+        }
+
+        private int _energia;
+
+        public int energia
+        {
+            get { return _energia; }
+
+            set
+            {
+                if(value < minEnergia)
+                {
+                    // energiaMinimaExcedida();
+                }
+                else
+                {
+                    if (value < 0)
+                    {
+                        _energia = 0;
+                    }
+                    else
+                    {
+                        if (value > 100)
+                        {
+                            _energia = 100;
+                        }
+                        else
+                        {
+                            _energia = value;
+                        }
+                    }
+                }
+            }
+        }
+
+        public Jugador(string nombre, int amonestaciones, int faltas, int energia, int puntos)
+        {
+            this.nombre = nombre;
+            this.amonestaciones = amonestaciones;
+            this.faltas = faltas;
+            this.energia = energia;
+            this.puntos = puntos;
+        }
+
         
     }
 }

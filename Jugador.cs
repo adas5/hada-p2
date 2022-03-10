@@ -49,7 +49,7 @@ namespace Hada
             set
             {
                 if(maxAmonestaciones <= value){
-                    // amonestacionesMaximoExcedido();
+                    amonestacionesMaximoExcedido(this, new AmonestacionesMaximoExcedidoArgs(amonestaciones) );
                 }
                 else{
                     if (value < 0){
@@ -72,7 +72,7 @@ namespace Hada
             {
                 if (value > maxFaltas)
                 {
-                    //faltasMaximoExcedido();
+                      faltasMaximoExcedido(this,new FaltasMaximoExcedidoArgs(faltas));
                 }
                 else
                 {
@@ -91,7 +91,7 @@ namespace Hada
             {
                 if(value < minEnergia)
                 {
-                    // energiaMinimaExcedida();
+                    energiaMinimaExcedida(this, new EnergiaMinimaExcedidaArgs(energia));
                 }
                 else
                 {
@@ -123,6 +123,85 @@ namespace Hada
             this.puntos = puntos;
         }
 
-        
+        public void incAmonestaciones()
+        {
+            amonestaciones += rand.Next(0, 3);
+        }
+
+        public void incFaltas()
+        {
+            faltas += rand.Next(0, 4);
+        }
+
+        public void decEnergia()
+        {
+            energia -= rand.Next(1, 8);
+        }
+
+        public void incPuntos()
+        {
+            puntos += rand.Next(0, 4);
+        }
+
+        public bool todoOk()
+        {
+            if(amonestaciones <= maxAmonestaciones && energia >= minEnergia && faltas <= maxFaltas)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public void mover()
+        {
+            if (todoOk() == true)
+            {
+                incAmonestaciones();
+                incFaltas();
+                incPuntos();
+                decEnergia();
+            }
+        }
+
+        public override string ToString()
+        {
+            string salida ="";
+            salida += "[" + nombre + "] Puntos: " + puntos + "; Amonestaciones: " + amonestaciones + "; Faltas: " + faltas + "; Energía: " + energia + " %; Ok:" + todoOk();
+            return salida;
+        }
+        public event EventHandler<AmonestacionesMaximoExcedidoArgs> amonestacionesMaximoExcedido;
+        public event EventHandler<FaltasMaximoExcedidoArgs> faltasMaximoExcedido;
+        public event EventHandler<EnergiaMinimaExcedidaArgs> energiaMinimaExcedida;
+
+        public class AmonestacionesMaximoExcedidoArgs : EventArgs
+        {
+            public int amonestacion { get; set; }
+            public AmonestacionesMaximoExcedidoArgs(int amon)
+            {
+                amonestacion = amon;
+            }
+        }
+
+        public class FaltasMaximoExcedidoArgs : EventArgs
+        {
+            public int faltas { get; set; }
+            public FaltasMaximoExcedidoArgs(int f)
+            {
+                faltas = f;
+            }
+        }
+
+        public class EnergiaMinimaExcedidaArgs : EventArgs
+        {
+            public int energia { get; set; }
+            public EnergiaMinimaExcedidaArgs(int ener)
+            {
+                energia = ener;
+            }
+        }
+
     }
 }
